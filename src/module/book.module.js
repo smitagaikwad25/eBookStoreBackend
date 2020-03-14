@@ -1,5 +1,4 @@
 const MONGOOSE = require("mongoose");
-
 const BOOKSCHEMA = MONGOOSE.Schema(
   {
     TITLE: { type: String, require: true },
@@ -25,14 +24,88 @@ exports.create = (bookData, callback) => {
   BOOKDETAILS.RATING = bookData.RATING;
   BOOKDETAILS.IMAGEURL = bookData.IMAGEPATH;
 
+
+
   BOOKDETAILS.save()
     .then(data => {
       callback(null, data);
     })
     .catch(err => {
       callback(
-        { message: "Error While Storeing Book Deatils in DataBase" },
+        { message: "Error While Store Book Details in DataBase" },
         null
       );
     });
 };
+
+exports.sortAllBooksByDecPrice = (data, callback) => {
+
+  SCHEMABOOK.find({}).sort({ 'PRICE': 1 })
+    .then(data => {
+      callback(null, data)
+    }).catch((err) => {
+      callback({ message: "Error While Storing Book Details in DataBase" })
+    })
+
+}
+
+exports.sortAllBooksByAscPrice = (data, callback) => {
+
+  // PRICE=data.PRICE;
+  SCHEMABOOK.find({}).sort({ 'PRICE': -1 })
+    .then(data => {
+      callback(null, data)
+    }).catch((err) => {
+      callback({ message: "Error While Storing Book Details in DataBase" })
+    })
+
+}
+
+exports.sortAllBooksByNewArrival = (data, callback) => {
+
+  SCHEMABOOK.find({}).sort({ 'YEAR': -1 })
+    .then(data => {
+      callback(null, data)
+    }).catch((err) => {
+      callback({ message: "Error While Storing Book Details in DataBase" })
+    })
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // // console.log('scemabook is -------------->',SCHEMABOOK);
+
+  // // var collection = db.collection('book');
+  // // console.log('collection is ======>',SCHEMABOOK);
+
+
+  // // // Add an unique index to title to force errors in the batch insert
+  // // collection.find({title:1}, {unique:true}, function(err, indexName) {
+  // //   callback(null, indexName);
+
+  // // })
+
+
+
+  // SCHEMABOOK.find({$orderby:{PRICE:-1}}){
+
+  //   callback(null, cursor);
+
+  // }
+  // // SCHEMABOOK.sort().then(data => {
+  // //   callback(null, data);

@@ -20,4 +20,9 @@ module.exports = app => {
       res.send(req.file.path);
     }
   });
+  app.get('/sortBooksLowToHigh',BOOK_CONTROLLER.sortAllBooksByDecPrice)
+  app.get('/sortBooksHighToLow',BOOK_CONTROLLER.sortAllBooksByAscPrice)
+  app.get('/sortBooksByArrival',BOOK_CONTROLLER.sortAllBooksByNewArrival)
+
 };
+  

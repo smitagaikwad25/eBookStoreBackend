@@ -15,7 +15,7 @@ require("dotenv").config();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 
-app.use(bodyParser.json());
+app.use(bodyParser.json());  
 
 mongoose.Promise = global.Promise;
 

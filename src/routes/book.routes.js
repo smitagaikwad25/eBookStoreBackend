@@ -20,4 +20,7 @@ module.exports = app => {
       res.send(req.file.path);
     }
   });
+
+  app.get('/searchBook',BOOK_CONTROLLER.searchBook)
+
 };

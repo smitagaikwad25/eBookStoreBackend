@@ -36,3 +36,16 @@ exports.create = (bookData, callback) => {
       );
     });
 };
+
+exports.searchBook = (bookData, callback) => {
+  SCHEMABOOK.find({ 'TITLE': { $regex: bookData.TITLE, $options: 'i' } }, (err, data) => {
+    if (err) {
+      return callback(err, null)
+    }
+    else {
+      return callback(null, data)
+    }
+  });
+
+}
+

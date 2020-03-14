@@ -1,31 +1,39 @@
-const express = require('express');
+const express = require("express");
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 const app = express();
 
-require ('dotenv').config();
+const expressValidator = require("express-validator");
 
-app.use(bodyParser.urlencoded({ extended: true })) 
+var cors = require("cors");
+app.use(cors());
 
-app.use(bodyParser.json())
+require("dotenv").config();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressValidator());
+
+app.use(bodyParser.json());
 
 mongoose.Promise = global.Promise;
 
-
-mongoose.connect(process.env.DB_CONNECTION, {
+mongoose
+  .connect(process.env.DB_CONNECTION, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-
-}).then(() => {
+  })
+  .then(() => {
     console.log("successfully contected to database");
-}).catch(err => {
-    console.log('could not connect to the database . Exiting now...', err);
+  })
+  .catch(err => {
+    console.log("could not connect to the database . Exiting now...", err);
     process.exit();
-});
+  });
 
+require("./src/routes/book.routes")(app);
 
 app.listen(process.env.PORT, () => {
-    console.log("Server is listening on port 3000")
-})
+  console.log("Server is listening on port 3000");
+});

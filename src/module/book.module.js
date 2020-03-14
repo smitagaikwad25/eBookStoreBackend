@@ -25,7 +25,6 @@ exports.create = (bookData, callback) => {
   BOOKDETAILS.IMAGEURL = bookData.IMAGEPATH;
 
 
-
   BOOKDETAILS.save()
     .then(data => {
       callback(null, data);
@@ -37,6 +36,7 @@ exports.create = (bookData, callback) => {
       );
     });
 };
+
 
 exports.sortAllBooksByDecPrice = (data, callback) => {
 
@@ -51,7 +51,6 @@ exports.sortAllBooksByDecPrice = (data, callback) => {
 
 exports.sortAllBooksByAscPrice = (data, callback) => {
 
-  // PRICE=data.PRICE;
   SCHEMABOOK.find({}).sort({ 'PRICE': -1 })
     .then(data => {
       callback(null, data)
@@ -71,6 +70,8 @@ exports.sortAllBooksByNewArrival = (data, callback) => {
     })
 
 }
+
+
 
 
 

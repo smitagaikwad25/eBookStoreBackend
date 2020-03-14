@@ -19,8 +19,7 @@ app.use(bodyParser.json());
 
 mongoose.Promise = global.Promise;
 
-mongoose
-  .connect(process.env.DB_CONNECTION, {
+mongoose.connect(process.env.DB_CONNECTION, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -32,7 +31,7 @@ mongoose
     process.exit();
   });
 
-require("./src/routes/book.routes")(app);
+require("./src/routes/userInfo.routes")(app);
 
 app.listen(process.env.PORT, () => {
   console.log("Server is listening on port 3000");

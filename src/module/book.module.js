@@ -8,6 +8,7 @@ const BOOKSCHEMA = MONGOOSE.Schema(
     DESCRIPTION: { type: String, require: true },
     PRICE: { type: Number, require: true },
     RATING: { type: Number, require: true },
+    NOOFCOUNT:{type:Number, default: 0},
     IMAGEURL: { type: String }
   },
   { timestamps: true }
@@ -24,6 +25,7 @@ exports.create = (bookData, callback) => {
   BOOKDETAILS.PRICE = bookData.PRICE;
   BOOKDETAILS.RATING = bookData.RATING;
   BOOKDETAILS.IMAGEURL = bookData.IMAGEPATH;
+  BOOKDETAILS.NOOFCOUNT=bookData.BOOKSCOUNT
 
   BOOKDETAILS.save()
     .then(data => {
@@ -36,3 +38,74 @@ exports.create = (bookData, callback) => {
       );
     });
 };
+
+exports.getAllBooks = (bookData, callback) => {
+  
+  SCHEMABOOK.find({})
+    .then(data => {
+      callback(null, data);
+    })
+    .catch(err => {
+      callback(
+        { message: "Error While Storeing Book Deatils in DataBase" },
+        null
+      );
+    });
+};
+
+exports.searchBook = (bookData, callback) => {
+  SCHEMABOOK.find({ 'TITLE': { $regex: bookData.TITLE, $options: 'i' } }, (err, data) => {
+    if (err) {
+      return callback(err, null)
+    }
+    else {
+      return callback(null, data)
+    }
+  });
+
+}
+
+exports.sortAllBooksByDecPrice = (data, callback) => {
+
+  SCHEMABOOK.find({}).sort({ 'PRICE': 1 })
+    .then(data => {
+      callback(null, data)
+    }).catch((err) => {
+      callback({ message: "Error While Storing Book Details in DataBase" })
+    })
+
+}
+
+exports.sortAllBooksByAscPrice = (data, callback) => {
+
+  SCHEMABOOK.find({}).sort({ 'PRICE': -1 })
+    .then(data => {
+      callback(null, data)
+    }).catch((err) => {
+      callback({ message: "Error While Storing Book Details in DataBase" })
+    })
+
+}
+
+exports.sortAllBooksByNewArrival = (data, callback) => {
+
+  SCHEMABOOK.find({}).sort({ 'YEAR': -1 })
+    .then(data => {
+      callback(null, data)
+    }).catch((err) => {
+      callback({ message: "Error While Storing Book Details in DataBase" })
+    })
+
+}
+
+exports.findone=(data,callback)=>{
+  console.log("in findone Function Modukle",data);
+  
+  SCHEMABOOK.findOneAndUpdate(data,{$inc:{NOOFCOUNT: 1}},(err,data)=>{
+    if(err){
+      return callback(false)
+    }
+    console.log("find data=========>",data);
+    return callback(null,true)
+  })
+}

@@ -8,8 +8,11 @@ module.exports = app => {
   });
 
   app.post("/Books", BOOK_CONTROLLER.create);
+  app.get("/getBooks", BOOK_CONTROLLER.getAllBooks);
+
   app.post("/FilePath", upload.single("filePath"), (req, res) => {
     const avatar = req.file;
+    console.log(avatar);
     console.log(req.file.path);
     if (!avatar) {
       res.status(400).send({
@@ -20,4 +23,10 @@ module.exports = app => {
       res.send(req.file.path);
     }
   });
+
+  
+  app.get('/searchBook',BOOK_CONTROLLER.searchBook)
+  app.get('/sortBooksLowToHigh',BOOK_CONTROLLER.sortAllBooksByDecPrice)
+  app.get('/sortBooksHighToLow',BOOK_CONTROLLER.sortAllBooksByAscPrice)
+  app.get('/sortBooksByArrival',BOOK_CONTROLLER.sortAllBooksByNewArrival)
 };

@@ -17,6 +17,8 @@ app.use(expressValidator());
 
 app.use(bodyParser.json());
 
+app.use(express.static(__dirname+'/public'))
+
 mongoose.Promise = global.Promise;
 
 mongoose
@@ -33,6 +35,7 @@ mongoose
   });
 
 require("./src/routes/book.routes")(app);
+require("./src/routes/userInfo.routes")(app);
 
 app.listen(process.env.PORT, () => {
   console.log("Server is listening on port 3000");

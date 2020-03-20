@@ -13,17 +13,31 @@ exports.create = (bookData, callback) => {
   });
 };
 
-exports.getAllBooks = (obj, callback) => {
-  BOOK_MODULE.getAllBooks(obj, function(err, data) {
-    console.log(data);
+exports.getAllBooks = (page, callback) => {
+  BOOK_MODULE.getAllBooks(page, function(err, data) {
     if (err) {
       callback(err);
     }
-    callback(null, data);
+    StartLimit = (page - 1) * 12
+    console.log(StartLimit);
+    
+    EndLimit = page*12
+    console.log(EndLimit);
+    
+    var books=[]
+    for(var i = StartLimit; i<EndLimit; i++){
+      if(data[i] == null){
+        break;
+      }
+      books.push(data[i])
+    }
+    console.log(books);
+    
+    callback(null, books);
   });
 };
 
-exports.searchBook = (bookData, callBack) => {
+exports.searchBook = (bookData, callBack) => {  
   BOOK_MODULE.searchBook(bookData, (err, data) => {
     if (err) {
       return callBack(err, null);
@@ -71,11 +85,25 @@ exports.sortAllBooksByNewArrival = (obj, callback) => {
   });
 };
 
-exports.findone = (obj, callBack) => {
+exports.findone = (obj, callback) => {
+  console.log("in find one service");
+  
   BOOK_MODULE.findone(obj, (err, data) => {
     if (err) {
-      return callBack(err);
+      return callback(err);
     }
-    return callBack(null, data);
+    return callback(null, data);
   });
 };
+
+exports.getCount = (obj, callback) => {
+  console.log("in find one service");
+  
+  BOOK_MODULE.getCount(obj, (err, data) => {
+    if (err) {
+      return callback(err);
+    }
+    return callback(null, data);
+  });
+};
+

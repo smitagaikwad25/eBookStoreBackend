@@ -159,13 +159,14 @@ describe("Book Controller", function() {
           ASSERT.equal(err, "error while searching books");
         }
         ASSERT.notEqual(data.TITLE, searchList.body.TITLE)
+        BOOK_SERVICE.searchBook.restore()
       })
     });
   
     it("given book title when not correct should return incorrect data", function () {
       let req = {
         body: {
-          TITLE: abc123
+          TITLE: "abc123"
         }
       };
       let bookData = req.body;

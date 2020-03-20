@@ -18,7 +18,7 @@ app.use(expressValidator());
 app.use(bodyParser.json());
 
 app.use(express.static(__dirname+'/public'))
-
+app.use('/upload',express.static('upload'))
 mongoose.Promise = global.Promise;
 
 mongoose

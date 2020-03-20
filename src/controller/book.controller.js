@@ -1,6 +1,8 @@
 const BOOK_SERVICE = require("../../src/service/book.service");
 let response = {};
 exports.create = (req, res) => {
+  console.log("in controller");
+  
   try {
     req.checkBody("TITLE").exists();
     req.checkBody("AUTHOR").exists();
@@ -17,10 +19,12 @@ exports.create = (req, res) => {
       .checkBody("PRICE")
       .isNumeric()
       .exists();
-    req.checkBody("NOOFCOUNT").isNumeric();
+    // req.checkBody("NOOFCOUNT").isNumeric();
     // req.checkBody("IMAGEPATH").exists();
     const error = req.validationErrors();
     if (error) {
+      console.log("in errorrr");
+      
       Response = {
         success: "validetion false"
       };
@@ -49,9 +53,11 @@ exports.create = (req, res) => {
             DESCRIPTION: req.body.DESCRIPTION,
             RATING: req.body.RATING,
             PRICE: req.body.PRICE,
-            BOOKSCOUNT: req.body.NOOFCOUNT,
+            BOOKSCOUNT: req.body.NOOFBOOKS,
             IMAGEPATH: req.body.IMAGEPATH
           };
+          console.log("in controller",bookData);
+          
 
           //}
           BOOK_SERVICE.create(bookData, function(err, data) {
@@ -66,7 +72,7 @@ exports.create = (req, res) => {
               success: true,
               data: data
             };
-            console.log("in crontoller ------>", data);
+            console.log("in crontoller ------>", data[0]);
 
             res.status(200).send(data);
           });
@@ -84,37 +90,31 @@ exports.create = (req, res) => {
 };
 
 exports.getAllBooks = (req, res) => {
-  BOOK_SERVICE.getAllBooks({}, function(err, data) {
-    console.log(data);
+  let page = req.body.page
+  console.log(req.body.page);
+  
+  BOOK_SERVICE.getAllBooks(page, function(err, data) {
     if (err) {
       res.status(404).send({
         message: err.message || "Soame Error Occurred While Creating"
       });
     }
+    // StartLimit = (page - 1) * 3
+    // console.log(StartLimit);
+    
+    // EndLimit = page*3
+    // console.log(EndLimit);
+    
+    // var books=[]
+    // for(var i = StartLimit; i<EndLimit; i++){
+    //   books.push(data[i])
+    // }
+    // console.log("in crontoller ------>", books);
     res.send(data);
   });
 };
 
-// exports.NOOFBOOKCOUNT = (TITLE, AUTHOR) => {
-//   console.log("asghsr");
-
-//   if ((AUTHOR == null)) {
-//     obj = {
-//       TITLE: TITLE
-//     };
-//     BOOK_SERVICE.updateCount(obj, (err, data) => {
-//       if (err) {
-//         return err;
-//       }
-//       return data;
-//     });
-//   }else{
-//     return false
-//   }
-// };
-
 exports.searchBook = async (req, res) => {
-  console.log("asdfdfggh", req.body.TITLE);
 
   try {
     req.checkBody("TITLE").exists();
@@ -130,7 +130,6 @@ exports.searchBook = async (req, res) => {
       bookData = {
         TITLE: await req.body.TITLE
       };
-      console.log(bookData);
 
       BOOK_SERVICE.searchBook(bookData, (err, data) => {
         if (err) {
@@ -230,3 +229,28 @@ exports.sortAllBooksByNewArrival = (req, res) => {
     res.status(500).send({ message: "error while getting obj" });
   }
 };
+
+exports.getCount = (req,res) =>{
+  try {
+    let response = {};
+    BOOK_SERVICE.getCount({}, (err, data) => {
+      if (err) {
+        response = {
+          success: "false",
+          message: err
+        };
+
+        res.status(500).send(response);
+      } else {
+        response = {
+          success: "true",
+          message: "successfully calculated",
+          data: data
+        };
+        res.status(200).send(response);
+      }
+    });
+  } catch (err) {
+    res.status(500).send({ message: "error while getting obj" });
+  }
+}

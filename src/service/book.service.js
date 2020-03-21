@@ -1,4 +1,4 @@
-const BOOK_MODULE = require("../../src/module/book.module");
+const BOOK_MODULE = require("../../src/model/book.model");
 
 exports.create = (bookData, callback) => {
   console.log("In service===>", bookData);

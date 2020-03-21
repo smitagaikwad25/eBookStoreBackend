@@ -17,8 +17,8 @@ app.use(expressValidator());
 
 app.use(bodyParser.json());
 
-app.use(express.static(__dirname+'/public'))
-app.use('/upload',express.static('upload'))
+app.use(express.static(__dirname + '/public'))
+app.use('/upload', express.static('upload'))
 mongoose.Promise = global.Promise;
 
 mongoose
@@ -35,8 +35,8 @@ mongoose
   });
 
 require("./src/routes/book.routes")(app);
-require("./src/routes/userInfo.routes")(app);
+// require("./src/rsroutes/userInfo.routes")(app);
 
 app.listen(process.env.PORT, () => {
-  console.log("Server is listening on port 3000");
+  console.log("Server is listening on port " + process.env.PORT);
 });

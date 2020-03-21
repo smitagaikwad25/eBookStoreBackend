@@ -1,5 +1,6 @@
 module.exports = app => {
   const BOOK_CONTROLLER = require("../controller/book.controller");
+  const USER_INFO_CONTROLLER = require("../controller/userInfo.controller");
   var multer = require("multer");
   const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -30,4 +31,12 @@ module.exports = app => {
       url: "http://localhost:3000/" + req.file.path
     });
   });
+
+
+  app.post("/userDetails", USER_INFO_CONTROLLER.userDetails);
+
+ 
 };
+
+
+ 

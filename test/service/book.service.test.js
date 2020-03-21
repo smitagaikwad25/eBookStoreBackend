@@ -1,13 +1,431 @@
 const BOOK_SERVICE = require("../../src/service/book.service");
-const BOOK_MODULE = require("../../src/module/book.module");
+const BOOK_MODULE = require("../../src/model/book.model");
+const USER_SERVICE = require("../../src/service/userInfo.service")
+const USER_MODULE = require("../../src/model/userInfo.model")
 const CHAI = require("chai");
 const EXPECT = CHAI.expect;
 const ASSERT = CHAI.assert;
 const SINON = require("sinon");
 
-describe("Book Controller", function() {
-  it("When Send Book Details Should Return status Code", function() {
+describe("Book Controller", function () {
+  it("When Send Book Details Should Return status Code", function () {
     let req = {
+      body: {
+        TITLE: "Harry Potter and the Secret Room",
+        AUTHOR: "J.K Rowling",
+        YEAR: 1996,
+        DESCRIPTION: "Mysterious and Magical Story based Novel with great Popularity",
+        RATING: 4.2,
+        PRICE: 250
+      }
+    };
+    let bookData = req.body;
+    SINON.stub(BOOK_MODULE, "create").yields(null, bookData);
+    BOOK_SERVICE.create(bookData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "Error While Storing Book Details..");
+      }
+      console.log("form service", data);
+      ASSERT.equal(data, bookData);
+    });
+  });
+});
+
+describe("Books test cases", function () {
+  it("When given search by title should return proper Book details", function () {
+    let req = {
+      body: {
+        TITLE: "Harry Potter and The Secret Room"
+      }
+    };
+
+    let bookData = req.body;
+    SINON.stub(BOOK_MODULE, "findone").yields(null, bookData);
+    BOOK_SERVICE.searchBook(bookData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "Error while Storing User Details..");
+      }
+      ASSERT.equal(data, bookData);
+      BOOK_MODULE.findone.restore();
+    })
+  })
+})
+
+describe("Book testcases", function () {
+  it("When given sort by low-high relevance should return proper data", function () {
+    let req = {
+      body: [
+        {
+          TITLE: "Cindrella and the Magical Pumpkin",
+          AUTHOR: "Great Granny",
+          YEAR: 1997,
+          DESCRIPTION: "my favorite one",
+          RATING: 4.5,
+          PRICE: 300
+        }, {
+          TITLE: "Annabella comes home",
+          AUTHOR: "M.D MAthews",
+          YEAR: 1990,
+          DESCRIPTION: "The horror and realistic story based novel",
+          RATING: 4.1,
+          PRICE: 250
+        }
+      ]
+    };
+
+    let books = req.body;
+    SINON.stub(BOOK_MODULE, "sortAllBooksByAscPrice").yields(null, books);
+    BOOK_SERVICE.sortAllBooksByAscPrice(books, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "Error while Storing User Details..");
+      }
+      ASSERT.equal(data, books);
+      BOOK_MODULE.sortAllBooksByAscPrice.restore();
+    })
+  })
+})
+
+describe("Book testcases", function () {
+  it("When given sort by high-low relevance should return proper data", function () {
+    let req = {
+      body: [
+        {
+          TITLE: "Cindrella and the Magical Pumpkin",
+          AUTHOR: "Great Granny",
+          YEAR: 1997,
+          DESCRIPTION: "my favorite one",
+          RATING: 4.5,
+          PRICE: 300
+        }, {
+          TITLE: "Annabella comes home",
+          AUTHOR: "M.D MAthews",
+          YEAR: 1990,
+          DESCRIPTION: "The horror and realistic story based novel",
+          RATING: 4.1,
+          PRICE: 250
+        }
+      ]
+    };
+
+    let books = req.body;
+    SINON.stub(BOOK_MODULE, "sortAllBooksByDecPrice").yields(null, books);
+    BOOK_SERVICE.sortAllBooksByDecPrice(books, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "Error while Storing User Details..");
+      }
+      ASSERT.equal(data, books);
+      BOOK_MODULE.sortAllBooksByDecPrice.restore();
+    })
+  })
+})
+
+describe("Book testcases", function () {
+  it("When given sort by high-low relevance should return proper data", function () {
+    let req = {
+      body: [
+        {
+          TITLE: "Cindrella and the Magical Pumpkin",
+          AUTHOR: "Great Granny",
+          YEAR: 1997,
+          DESCRIPTION: "my favorite one",
+          RATING: 4.5,
+          PRICE: 300
+        }, {
+          TITLE: "Annabella comes home",
+          AUTHOR: "M.D MAthews",
+          YEAR: 1990,
+          DESCRIPTION: "The horror and realistic story based novel",
+          RATING: 4.1,
+          PRICE: 250
+        },
+        {
+          TITLE: "Three mistakes of My Life",
+          AUTHOR: "PV Kotwal",
+          YEAR: 2001,
+          DESCRIPTION: "The Motivational Novel for youngsters",
+          RATING: 4.1,
+          PRICE: 210
+        }
+      ]
+    };
+
+    let books = req.body;
+    SINON.stub(BOOK_MODULE, "sortAllBooksByNewArrival").yields(null, books);
+    BOOK_SERVICE.sortAllBooksByNewArrival(books, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "Error while Storing User Details..");
+      }
+      ASSERT.equal(data, books);
+      BOOK_MODULE.sortAllBooksByNewArrival.restore();
+    })
+  })
+})
+
+
+describe("Users testcases", function () {
+  it("When given correct user data should Save data", function () {
+    let req = {
+      body: {
+        "NAME": "nisha",
+        "PHONE_NO": 9867854231,
+        "PIN": 411015,
+        "LOCALITY": "Tingre Nagar",
+        "ADDRESS": "Pune",
+        "CITY": "Pune",
+        "LANDMARK": "Airport Rd"
+      }
+
+    };
+    let userData = req.body;
+    SINON.stub(USER_MODULE, "create").yields(null, userData);
+    USER_SERVICE.userDetails(userData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "Error while Storing User Details..");
+      }
+      ASSERT.equal(data, userData);
+      USER_MODULE.create.restore();
+    });
+  });
+});
+
+describe("Users testcases", function () {
+  it("When given wrong user name should return err", function () {
+    let req = {
+      body: {
+        "NAME": "13476172927302389",
+        "PHONE_NO": 9867854231,
+        "PIN": 411015,
+        "LOCALITY": "Tingre Nagar",
+        "ADDRESS": "Pune",
+        "CITY": "Pune",
+        "LANDMARK": "Airport Rd"
+      }
+
+    };
+    let userData = req.body;
+    SINON.stub(USER_MODULE, "create").yields(null, userData);
+    USER_SERVICE.userDetails(userData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "Invalid User Details..");
+        USER_MODULE.create.restore();
+      }
+    });
+  });
+});
+describe("Users testcases", function () {
+  it("when given book title null should return null data and error", function () {
+    let req = {
+      body: {
+        TITLE: null
+      }
+    };
+    let bookData = req.body;
+
+    let searchList = {
+      body: {
+        TITLE: "Hamlet",
+        AUTHOR: "Shakesphere",
+        YEAR: 1996,
+        DESCRIPTION: "Realistic Love Story Between Romeo and Juliet",
+        RATING: 3.9,
+        PRICE: 310
+      }
+    };
+
+    SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
+    BOOK_SERVICE.searchBook(bookData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "error while searching books");
+      }
+      ASSERT.notEqual(data.TITLE, searchList.body.TITLE);
+      BOOK_MODULE.searchBook.restore();
+    });
+  });
+
+
+  it("When given book title empty should return err ", function () {
+    let req = {
+      body: {
+        TITLE: ""
+      }
+    };
+    let bookData = req.body;
+
+    let searchList = {
+      body: {
+        TITLE: "Disney and Me",
+        AUTHOR: "Walt Disney",
+        YEAR: 1991,
+        DESCRIPTION: "This novel is full of Fair Tale and the imaginary World",
+        RATING: 3.2,
+        PRICE: 350
+      }
+    };
+
+    SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
+    BOOK_SERVICE.searchBook(bookData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "error while searching books");
+      }
+      ASSERT.notEqual(data.TITLE, searchList.body.TITLE);
+      BOOK_MODULE.searchBook.restore();
+    });
+  });
+
+  it("When given book title when not correct should return incorrect data", function () {
+    let req = {
+      body: {
+        TITLE: "Room123"
+      }
+    };
+    let bookData = req.body;
+
+    let searchList = {
+      body: {
+        TITLE: "Alice in wonderLand",
+        AUTHOR: "Noobie wolfs",
+        YEAR: 1992,
+        DESCRIPTION: "Mysterious novel with lots of Twists ",
+        RATING: 3.2,
+        PRICE: 290
+      }
+    };
+
+    SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
+    BOOK_SERVICE.searchBook(bookData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "error while searching books");
+      }
+      ASSERT.notEqual(data.TITLE, searchList.body.TITLE);
+      BOOK_MODULE.searchBook.restore();
+    });
+  });
+
+  it('When given book authror incorrect  should return err', function () {
+    let req = {
+      body: {
+        AUTHOR: "Disney1223"
+      }
+    };
+
+    let authorData = req.body;
+
+    let searchList = {
+      body: {
+        TITLE: "Hamlet",
+        AUTHOR: "Shakesphere",
+        YEAR: 1997,
+        DESCRIPTION: "Love story",
+        RATING: 4.2,
+        PRICE: 340
+      }
+    };
+    SINON.stub(BOOK_MODULE, "searchBook").yields(null, authorData);
+    BOOK_SERVICE.searchBook(authorData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "error while searching books");
+      }
+      ASSERT.notEqual(data.TITLE, searchList.body.TITLE);
+      BOOK_MODULE.searchBook.restore();
+    });
+  });
+
+  it('When given year empty  should return err', function () {
+    let req = {
+      body: {
+        YEAR: ""
+      }
+    };
+    
+    let authorData = req.body;
+
+    let searchList = {
+      body: {
+        TITLE: "Hamlet",
+        AUTHOR: "Shakesphere",
+        YEAR: 1997,
+        DESCRIPTION: "Love story",
+        RATING: 4.2,
+        PRICE: 340
+      }
+    };
+    SINON.stub(BOOK_MODULE, "searchBook").yields(null, authorData);
+    BOOK_SERVICE.searchBook(authorData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "error while searching books");
+      }
+      ASSERT.notEqual(data.TITLE, searchList.body.TITLE);
+      BOOK_MODULE.searchBook.restore();
+    });
+  });
+
+  it('When given year string should return err', function () {
+    let req = {
+      body: {
+        YEAR: "adfshxj"
+      }
+    };
+
+    let authorData = req.body;
+
+    let searchList = {
+      body: {
+        TITLE: "Hamlet",
+        AUTHOR: "Shakesphere",
+        YEAR: 1997,
+        DESCRIPTION: "Love story",
+        RATING: 4.2,
+        PRICE: 340
+      }
+    };
+    SINON.stub(BOOK_MODULE, "searchBook").yields(null, authorData);
+    BOOK_SERVICE.searchBook(authorData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "error while searching books");
+      }
+      ASSERT.notEqual(data.TITLE, searchList.body.TITLE);
+      BOOK_MODULE.searchBook.restore();
+    });
+  });
+
+  it('When given description empty  should return err', function () {
+    let req = {
+      body: {
+        DESCRIPTION: ""
+      }
+    };
+
+    let authorData = req.body;
+
+    let searchList = {
+      body: {
+        TITLE: "Doremona and Nobitas Tales",
+        AUTHOR: "Shinu shizuva",
+        YEAR: 1997,
+        DESCRIPTION: "Magical Stories",
+        RATING: 4.2,
+        PRICE: 350
+      }
+    };
+    SINON.stub(BOOK_MODULE, "searchBook").yields(null, authorData);
+    BOOK_SERVICE.searchBook(authorData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "error while searching books");
+      }
+      ASSERT.notEqual(data.TITLE, searchList.body.TITLE);
+      BOOK_MODULE.searchBook.restore();
+    });
+  });
+
+  it("when given title is NaN should return notEqual", function () {
+    let req = {
+      body: {
+        AUTHOR: NaN,
+      }
+    };
+    let bookData = req.body;
+
+    let searchList = {
       body: {
         TITLE: "Abc",
         AUTHOR: "XUZ",
@@ -17,181 +435,107 @@ describe("Book Controller", function() {
         PRICE: 250
       }
     };
-    let bookData = req.body;
-    SINON.stub(BOOK_MODULE, "create").yields(null, bookData);
-    BOOK_SERVICE.create(bookData, function(err, data) {
+
+    SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
+    BOOK_SERVICE.searchBook(bookData, function (err, data) {
       if (err) {
-        ASSERT.equal(err, "Error While Storing Book Details..");
+        ASSERT.equal(err, "error while searching books");
       }
-      console.log("form service", data);
-      ASSERT.equal(data, bookData);
-    });
-  });
-  describe("Book Controller", function () {
-    it("When Send Book Details Should Return status Code", function () {
-      let req = {
-        body: {
-          TITLE: "Abc",
-          AUTHOR: "XUZ",
-          YEAR: 1996,
-          DESCRIPTION: "SFGHJK",
-          RATING: 3.2,
-          PRICE: 250
-        }
-      };
-      let bookData = req.body;
-      SINON.stub(BOOK_MODULE, "create").yields(null, bookData);
-      BOOK_SERVICE.create(bookData, function (err, data) {
-        if (err) {
-          ASSERT.equal(err, "Error While Storing Book Details..");
-        }
-        console.log("form service", data);
-        ASSERT.equal(data, bookData);
-      });
-    });
-  
-    it("given book title when correct should return books details ", function () {
-      let req = {
-        body: {
-          TITLE: "ABC"
-        }
-      };
-      let bookData = req.body;
-  
-      let searchList = {
-        body: {
-          TITLE: "Abc",
-          AUTHOR: "XUZ",
-          YEAR: 1996,
-          DESCRIPTION: "SFGHJK",
-          RATING: 3.2,
-          PRICE: 250
-        }
-      };
-  
-      SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
-      BOOK_SERVICE.searchBook(bookData, function (err, data) {
-        if (err) {
-          ASSERT.equal(err, "error while searching books");
-        }
-        ASSERT.equal(data.TITLE, searchList.body.TITLE)
-      })
+      ASSERT.notEqual(data.TITLE, searchList.body.TITLE)
+      BOOK_MODULE.searchBook.restore();
     })
-  
-    it("given book title when null shoud return null data", function () {
-      let req = {
-        body: {
-          TITLE: null
-        }
-      };
-      let bookData = req.body;
-  
-      let searchList = {
-        body: {
-          TITLE: "Abc",
-          AUTHOR: "XUZ",
-          YEAR: 1996,
-          DESCRIPTION: "SFGHJK",
-          RATING: 3.2,
-          PRICE: 250
-        }
-      };
-  
-      SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
-      BOOK_SERVICE.searchBook(bookData, function (err, data) {
-        if (err) {
-          ASSERT.equal(err, "error while searching books");
-        }
-        ASSERT.notEqual(data.TITLE, searchList.body.TITLE)
-      });
-    });
-  
-    it("given book title when empty should return incorrect data", function () {
-      let req = {
-        body: {
-          TITLE: ""
-        }
-      };
-      let bookData = req.body;
-  
-      let searchList = {
-        body: {
-          TITLE: "Abc",
-          AUTHOR: "XUZ",
-          YEAR: 1996,
-          DESCRIPTION: "SFGHJK",
-          RATING: 3.2,
-          PRICE: 250
-        }
-      };
-  
-      SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
-      BOOK_SERVICE.searchBook(bookData, function (err, data) {
-        if (err) {
-          ASSERT.equal(err, "error while searching books");
-        }
-        ASSERT.notEqual(data.TITLE, searchList.body.TITLE)
-      })
-    });
-  
-    it("given book title when in number formate should return incorrect data", function () {
-      let req = {
-        body: {
-          TITLE: 123
-        }
-      };
-      let bookData = req.body;
-  
-      let searchList = {
-        body: {
-          TITLE: "Abc",
-          AUTHOR: "XUZ",
-          YEAR: 1996,
-          DESCRIPTION: "SFGHJK",
-          RATING: 3.2,
-          PRICE: 250
-        }
-      };
-  
-      SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
-      BOOK_SERVICE.searchBook(bookData, function (err, data) {
-        if (err) {
-          ASSERT.equal(err, "error while searching books");
-        }
-        ASSERT.notEqual(data.TITLE, searchList.body.TITLE)
-        BOOK_SERVICE.searchBook.restore()
-      })
-    });
-  
-    it("given book title when not correct should return incorrect data", function () {
-      let req = {
-        body: {
-          TITLE: "abc123"
-        }
-      };
-      let bookData = req.body;
-  
-      let searchList = {
-        body: {
-          TITLE: "Abc",
-          AUTHOR: "XUZ",
-          YEAR: 1996,
-          DESCRIPTION: "SFGHJK",
-          RATING: 3.2,
-          PRICE: 250
-        }
-      };
-  
-      SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
-      BOOK_SERVICE.searchBook(bookData, function (err, data) {
-        if (err) {
-          ASSERT.equal(err, "error while searching books");
-        }
-        ASSERT.notEqual(data.TITLE, searchList.body.TITLE)
-      })
-    });
-  
-  
   });
 
+
+  it("when given title is undefined should return notEqual", function () {
+    let req = {
+      body: {
+        TITLE: undefined
+      }
+    };
+    let bookData = req.body;
+
+    let searchList = {
+      body: {
+        TITLE: "Abc",
+        AUTHOR: "XUZ",
+        YEAR: 1996,
+        DESCRIPTION: "SFGHJK",
+        RATING: 3.2,
+        PRICE: 250
+      }
+    };
+
+    SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
+    BOOK_SERVICE.searchBook(bookData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "error while searching books");
+      }
+      ASSERT.notEqual(data.TITLE, searchList.body.TITLE)
+      BOOK_MODULE.searchBook.restore();
+    })
+  });
+
+
+  it("when given title not in proper should return notEqual  ", function () {
+    let req = {
+      body: {
+        TITLE: "/"
+      }
+    };
+    let bookData = req.body;
+
+    let searchList = {
+      body: {
+        TITLE: "Abc",
+        AUTHOR: "XUZ",
+        YEAR: 1996,
+        DESCRIPTION: "SFGHJK",
+        RATING: 3.2,
+        PRICE: 250
+      }
+    };
+
+    SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
+    BOOK_SERVICE.searchBook(bookData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "error while searching books");
+      }
+      ASSERT.notEqual(data.TITLE, searchList.body.TITLE)
+      BOOK_MODULE.searchBook.restore();
+    })
+  });
+
+  it("when given title not in proper should return notEqual  ", function () {
+    let req = {
+      body: {
+        TITLE: "ABC"
+      }
+    };
+    let bookData = req.body;
+
+    let searchList = {
+      body: {
+        TITLE: "Abc",
+        AUTHOR: "XUZ",
+        YEAR: 1996,
+        DESCRIPTION: "SFGHJK",
+        RATING: 3.2,
+        PRICE: 250
+      }
+    };
+
+    SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
+    BOOK_SERVICE.searchBook(bookData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "error while searching books");
+      }
+      ASSERT.notEqual(data.TITLE, searchList.body.TITLE)
+      BOOK_MODULE.searchBook.restore();
+    })
+  });
+
+
 });
+
+

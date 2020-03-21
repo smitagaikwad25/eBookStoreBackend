@@ -27,6 +27,7 @@ describe("Book Controller", function () {
       }
       console.log("form service", data);
       ASSERT.equal(data, bookData);
+      BOOK_MODULE.create.restore();
     });
   });
 });
@@ -325,7 +326,7 @@ describe("Users testcases", function () {
       if (err) {
         ASSERT.equal(err, "error while searching books");
       }
-      ASSERT.notEqual(data.TITLE, searchList.body.TITLE);
+      ASSERT.notEqual(data.AUTHOR, searchList.body.AUTHOR);
       BOOK_MODULE.searchBook.restore();
     });
   });
@@ -349,13 +350,13 @@ describe("Users testcases", function () {
         PRICE: 340
       }
     };
-    SINON.stub(BOOK_MODULE, "searchBook").yields(null, authorData);
-    BOOK_SERVICE.searchBook(authorData, function (err, data) {
+    SINON.stub(BOOK_MODULE, "create").yields(null, authorData);
+    BOOK_SERVICE.create(authorData, function (err, data) {
       if (err) {
         ASSERT.equal(err, "error while searching books");
       }
-      ASSERT.notEqual(data.TITLE, searchList.body.TITLE);
-      BOOK_MODULE.searchBook.restore();
+      ASSERT.notEqual(data.YEAR, searchList.body.YEAR);
+      BOOK_MODULE.create.restore();
     });
   });
 
@@ -378,13 +379,13 @@ describe("Users testcases", function () {
         PRICE: 340
       }
     };
-    SINON.stub(BOOK_MODULE, "searchBook").yields(null, authorData);
-    BOOK_SERVICE.searchBook(authorData, function (err, data) {
+    SINON.stub(BOOK_MODULE, "create").yields(null, authorData);
+    BOOK_SERVICE.create(authorData, function (err, data) {
       if (err) {
         ASSERT.equal(err, "error while searching books");
       }
-      ASSERT.notEqual(data.TITLE, searchList.body.TITLE);
-      BOOK_MODULE.searchBook.restore();
+      ASSERT.notEqual(data.YEAR, searchList.body.YEAR);
+      BOOK_MODULE.create.restore();
     });
   });
 
@@ -407,13 +408,13 @@ describe("Users testcases", function () {
         PRICE: 350
       }
     };
-    SINON.stub(BOOK_MODULE, "searchBook").yields(null, authorData);
-    BOOK_SERVICE.searchBook(authorData, function (err, data) {
+    SINON.stub(BOOK_MODULE, "create").yields(null, authorData);
+    BOOK_SERVICE.create(authorData, function (err, data) {
       if (err) {
         ASSERT.equal(err, "error while searching books");
       }
-      ASSERT.notEqual(data.TITLE, searchList.body.TITLE);
-      BOOK_MODULE.searchBook.restore();
+      ASSERT.notEqual(data.DESCRIPTION, searchList.body.D);
+      BOOK_MODULE.create.restore();
     });
   });
 
@@ -436,13 +437,13 @@ describe("Users testcases", function () {
       }
     };
 
-    SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
-    BOOK_SERVICE.searchBook(bookData, function (err, data) {
+    SINON.stub(BOOK_MODULE, "create").yields(null, bookData);
+    BOOK_SERVICE.create(bookData, function (err, data) {
       if (err) {
         ASSERT.equal(err, "error while searching books");
       }
-      ASSERT.notEqual(data.TITLE, searchList.body.TITLE)
-      BOOK_MODULE.searchBook.restore();
+      ASSERT.notEqual(data.AUTHOR, searchList.body.AUTHOR)
+      BOOK_MODULE.create.restore();
     })
   });
 
@@ -554,13 +555,13 @@ describe("Users testcases", function () {
       }
     };
 
-    SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
-    BOOK_SERVICE.searchBook(bookData, function (err, data) {
+    SINON.stub(BOOK_MODULE, "create").yields(null, bookData);
+    BOOK_SERVICE.create(bookData, function (err, data) {
       if (err) {
-        ASSERT.equal(err, "error while searching books");
+        ASSERT.equal(err);
       }
-      ASSERT.notEqual(data.TITLE, searchList.body.TITLE)
-      BOOK_MODULE.searchBook.restore();
+      ASSERT.notEqual(data.PRICE, searchList.body.PRICE)
+      BOOK_MODULE.create.restore();
     })
   });
 

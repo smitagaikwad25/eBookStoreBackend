@@ -336,7 +336,7 @@ describe("Users testcases", function () {
         YEAR: ""
       }
     };
-    
+
     let authorData = req.body;
 
     let searchList = {
@@ -510,6 +510,35 @@ describe("Users testcases", function () {
     let req = {
       body: {
         TITLE: "ABC"
+      }
+    };
+    let bookData = req.body;
+
+    let searchList = {
+      body: {
+        TITLE: "Abc",
+        AUTHOR: "XUZ",
+        YEAR: 1996,
+        DESCRIPTION: "SFGHJK",
+        RATING: 3.2,
+        PRICE: 250
+      }
+    };
+
+    SINON.stub(BOOK_MODULE, "searchBook").yields(null, bookData);
+    BOOK_SERVICE.searchBook(bookData, function (err, data) {
+      if (err) {
+        ASSERT.equal(err, "error while searching books");
+      }
+      ASSERT.notEqual(data.TITLE, searchList.body.TITLE)
+      BOOK_MODULE.searchBook.restore();
+    })
+  });
+
+  it("when given Price in not proper should return notEqual  ", function () {
+    let req = {
+      body: {
+        PRICE: "ABC"
       }
     };
     let bookData = req.body;

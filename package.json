@@ -1,16 +1,14 @@
 {
-  "name": "mynotesapp",
+  "name": "ebookstorebackend",
   "version": "1.0.0",
+  "description": "",
   "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+  "directories": {
+    "test": "test"
   },
-  "author": "BridgeLab",
-  "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
-    "bcrypt": "^4.0.0",
+    "bcrypt": "^4.0.1",
     "body": "^5.1.0",
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",
@@ -23,16 +21,28 @@
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
-    "mongoose": "^5.9.5",
-    "morgan": "^1.9.1",
-    "multer": "^1.4.2",
-    "nodemon": "^2.0.2"
-  },
-  "devDependencies": {
     "mocha": "^7.1.1",
+    "mongoose": "^5.9.5",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
     "node-mocks-http": "^1.8.1",
-    "sinon": "^9.0.0"
+    "nodemon": "^2.0.2",
+    "sinon": "^9.0.1",
+    "swagger-ui-express": "^4.1.4"
   },
-  "keywords": [],
-  "description": ""
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prasad98765/eBookStoreBackend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prasad98765/eBookStoreBackend/issues"
+  },
+  "homepage": "https://github.com/prasad98765/eBookStoreBackend#readme"
 }

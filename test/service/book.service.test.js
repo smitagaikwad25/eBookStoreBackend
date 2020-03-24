@@ -9,7 +9,7 @@ const SINON = require("sinon");
 
 describe("Book Controller", function () {
   it("When Send Book Details Should Return status Code", function () {
-    let req = {
+    let obj = {
       body: {
         TITLE: "Harry Potter and the Secret Room",
         AUTHOR: "J.K Rowling",
@@ -19,7 +19,7 @@ describe("Book Controller", function () {
         PRICE: 250
       }
     };
-    let bookData = req.body;
+    let bookData = obj.body;
     SINON.stub(BOOK_MODULE, "create").yields(null, bookData);
     BOOK_SERVICE.create(bookData, function (err, data) {
       if (err) {
@@ -34,13 +34,13 @@ describe("Book Controller", function () {
 
 describe("Books test cases", function () {
   it("When given search by title should return proper Book details", function () {
-    let req = {
+    let obj = {
       body: {
         TITLE: "Harry Potter and The Secret Room"
       }
     };
 
-    let bookData = req.body;
+    let bookData = obj.body;
     SINON.stub(BOOK_MODULE, "findone").yields(null, bookData);
     BOOK_SERVICE.searchBook(bookData, function (err, data) {
       if (err) {
@@ -54,7 +54,7 @@ describe("Books test cases", function () {
 
 describe("Book testcases", function () {
   it("When given sort by low-high relevance should return proper data", function () {
-    let req = {
+    let obj = {
       body: [
         {
           TITLE: "Cindrella and the Magical Pumpkin",
@@ -74,7 +74,7 @@ describe("Book testcases", function () {
       ]
     };
 
-    let books = req.body;
+    let books = obj.body;
     SINON.stub(BOOK_MODULE, "sortAllBooksByAscPrice").yields(null, books);
     BOOK_SERVICE.sortAllBooksByAscPrice(books, function (err, data) {
       if (err) {
@@ -88,7 +88,7 @@ describe("Book testcases", function () {
 
 describe("Book testcases", function () {
   it("When given sort by high-low relevance should return proper data", function () {
-    let req = {
+    let obj = {
       body: [
         {
           TITLE: "Cindrella and the Magical Pumpkin",
@@ -108,7 +108,7 @@ describe("Book testcases", function () {
       ]
     };
 
-    let books = req.body;
+    let books = obj.body;
     SINON.stub(BOOK_MODULE, "sortAllBooksByDecPrice").yields(null, books);
     BOOK_SERVICE.sortAllBooksByDecPrice(books, function (err, data) {
       if (err) {
@@ -122,7 +122,7 @@ describe("Book testcases", function () {
 
 describe("Book testcases", function () {
   it("When given sort by high-low relevance should return proper data", function () {
-    let req = {
+    let obj = {
       body: [
         {
           TITLE: "Cindrella and the Magical Pumpkin",
@@ -150,7 +150,7 @@ describe("Book testcases", function () {
       ]
     };
 
-    let books = req.body;
+    let books = obj.body;
     SINON.stub(BOOK_MODULE, "sortAllBooksByNewArrival").yields(null, books);
     BOOK_SERVICE.sortAllBooksByNewArrival(books, function (err, data) {
       if (err) {
@@ -165,7 +165,7 @@ describe("Book testcases", function () {
 
 describe("Users testcases", function () {
   it("When given correct user data should Save data", function () {
-    let req = {
+    let obj = {
       body: {
         "NAME": "nisha",
         "PHONE_NO": 9867854231,
@@ -177,7 +177,7 @@ describe("Users testcases", function () {
       }
 
     };
-    let userData = req.body;
+    let userData = obj.body;
     SINON.stub(USER_MODULE, "create").yields(null, userData);
     USER_SERVICE.userDetails(userData, function (err, data) {
       if (err) {
@@ -191,7 +191,7 @@ describe("Users testcases", function () {
 
 describe("Users testcases", function () {
   it("When given wrong user name should return err", function () {
-    let req = {
+    let obj = {
       body: {
         "NAME": "13476172927302389",
         "PHONE_NO": 9867854231,
@@ -203,7 +203,7 @@ describe("Users testcases", function () {
       }
 
     };
-    let userData = req.body;
+    let userData = obj.body;
     SINON.stub(USER_MODULE, "create").yields(null, userData);
     USER_SERVICE.userDetails(userData, function (err, data) {
       if (err) {
@@ -213,14 +213,15 @@ describe("Users testcases", function () {
     });
   });
 });
+
 describe("Users testcases", function () {
   it("when given book title null should return null data and error", function () {
-    let req = {
+    let obj = {
       body: {
         TITLE: null
       }
     };
-    let bookData = req.body;
+    let bookData = obj.body;
 
     let searchList = {
       body: {
@@ -245,12 +246,12 @@ describe("Users testcases", function () {
 
 
   it("When given book title empty should return err ", function () {
-    let req = {
+    let obj = {
       body: {
         TITLE: ""
       }
     };
-    let bookData = req.body;
+    let bookData = obj.body;
 
     let searchList = {
       body: {
@@ -274,12 +275,12 @@ describe("Users testcases", function () {
   });
 
   it("When given book title when not correct should return incorrect data", function () {
-    let req = {
+    let obj = {
       body: {
         TITLE: "Room123"
       }
     };
-    let bookData = req.body;
+    let bookData = obj.body;
 
     let searchList = {
       body: {
@@ -303,13 +304,13 @@ describe("Users testcases", function () {
   });
 
   it('When given book authror incorrect  should return err', function () {
-    let req = {
+    let obj = {
       body: {
         AUTHOR: "Disney1223"
       }
     };
 
-    let authorData = req.body;
+    let authorData = obj.body;
 
     let searchList = {
       body: {
@@ -332,13 +333,13 @@ describe("Users testcases", function () {
   });
 
   it('When given year empty  should return err', function () {
-    let req = {
+    let obj = {
       body: {
         YEAR: ""
       }
     };
 
-    let authorData = req.body;
+    let authorData = obj.body;
 
     let searchList = {
       body: {
@@ -361,13 +362,13 @@ describe("Users testcases", function () {
   });
 
   it('When given year string should return err', function () {
-    let req = {
+    let obj = {
       body: {
         YEAR: "adfshxj"
       }
     };
 
-    let authorData = req.body;
+    let authorData = obj.body;
 
     let searchList = {
       body: {
@@ -390,13 +391,13 @@ describe("Users testcases", function () {
   });
 
   it('When given description empty  should return err', function () {
-    let req = {
+    let obj = {
       body: {
         DESCRIPTION: ""
       }
     };
 
-    let authorData = req.body;
+    let authorData = obj.body;
 
     let searchList = {
       body: {
@@ -419,12 +420,12 @@ describe("Users testcases", function () {
   });
 
   it("when given title is NaN should return notEqual", function () {
-    let req = {
+    let obj = {
       body: {
         AUTHOR: NaN,
       }
     };
-    let bookData = req.body;
+    let bookData = obj.body;
 
     let searchList = {
       body: {
@@ -449,12 +450,12 @@ describe("Users testcases", function () {
 
 
   it("when given title is undefined should return notEqual", function () {
-    let req = {
+    let obj = {
       body: {
         TITLE: undefined
       }
     };
-    let bookData = req.body;
+    let bookData = obj.body;
 
     let searchList = {
       body: {
@@ -479,12 +480,12 @@ describe("Users testcases", function () {
 
 
   it("when given title not in proper should return notEqual  ", function () {
-    let req = {
+    let obj = {
       body: {
         TITLE: "/"
       }
     };
-    let bookData = req.body;
+    let bookData = obj.body;
 
     let searchList = {
       body: {
@@ -508,12 +509,12 @@ describe("Users testcases", function () {
   });
 
   it("when given title not in proper should return notEqual  ", function () {
-    let req = {
+    let obj = {
       body: {
         TITLE: "ABC"
       }
     };
-    let bookData = req.body;
+    let bookData = obj.body;
 
     let searchList = {
       body: {
@@ -537,12 +538,12 @@ describe("Users testcases", function () {
   });
 
   it("when given Price in not proper should return notEqual  ", function () {
-    let req = {
+    let obj = {
       body: {
         PRICE: "ABC"
       }
     };
-    let bookData = req.body;
+    let bookData = obj.body;
 
     let searchList = {
       body: {

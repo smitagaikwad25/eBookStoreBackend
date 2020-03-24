@@ -17,15 +17,15 @@ module.exports = app => {
     }
   });
 
-  app.post("/Books", BOOK_CONTROLLER.create);
-  app.post("/getBooks", BOOK_CONTROLLER.getAllBooks);
-  app.post("/searchBook", BOOK_CONTROLLER.searchBook);
+  app.post("/ebookstore/book", BOOK_CONTROLLER.create);
+  app.post("/ebookstore/books", BOOK_CONTROLLER.getAllBooks);
+  app.post("/ebookstore/search", BOOK_CONTROLLER.searchBook);
   app.get("/sortBooksLowToHigh", BOOK_CONTROLLER.sortAllBooksByDecPrice);
   app.get("/sortBooksHighToLow", BOOK_CONTROLLER.sortAllBooksByAscPrice);
   app.get("/sortBooksByArrival", BOOK_CONTROLLER.sortAllBooksByNewArrival);
-  app.get("/getNoOFBookCount", BOOK_CONTROLLER.getCount);
+  app.get("/ebookstore/books/count", BOOK_CONTROLLER.getCount);
 
-  app.post("/upload", upload.single("filePath"), (req, res, next) => {
+  app.post("/image", upload.single("filePath"), (req, res, next) => {
     res.send({
       type: "GET",
       url: "http://localhost:3000/" + req.file.path

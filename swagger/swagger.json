@@ -10,7 +10,7 @@
         }
     },
     "host": "localhost:3000",
-    "basePath": "/api/v1",
+    "basePath": "/",
     "tags": [{
         "name": "Users",
         "description": "API for users in the system"
@@ -25,11 +25,12 @@
         "application/json"
     ],
     "paths": {
-        "/addbooks": {
+        "/ebookstore/book": {
             "post": {
                 "tags": [
                     "BookData"
                 ],
+                "summary":"Add book to the system",
                 "description": "Create New Book Data in system",
                 "parameters":[
                     {
@@ -52,36 +53,60 @@
                 }
             }
         },
-        "/displaybooks": {
-            "get": {
+        "/ebookstore/books": {
+            "post": {
                 "tags": [
                     "BookData"
                 ],
-                "summary": "Get All the Books in System",
-                "responses": {
-                  "200": {
+                "summary": "Get Books in System",
+                "description":"Get all the books from system",
+                "parameters": [{
+                    "name":"bookData",
+                    "in":"body",
+                    "description":"Books we want to see",
+                    "schema":{
+                        "$ref":"#/definitions/AllBooks"
+                    }
+                }], "produces":[
+                    "application/json"
+                ],
+                "responses":{"200": {
                     "description": "OK",
                     "schema": {
-                      "$ref": "#/definitions/Books"
+                      "$ref": "#/definitions/AllBooks"
                     }
                   }
+                
+                  
                 } 
             }
 
         },
-        "/searchbook": {
-            "get": {
+        "/ebookstore/search": {
+            "post": {
                 "tags": [
                     "BookData"
                 ],
-                "summary": "Search the required Book",
-                "responses": {
-                  "200": {
+                "summary": "Get Searched Book in System",
+                "description":"Get Searched Book",
+                "parameters": [{
+                    "name":"bookData",
+                    "in":"body",
+                    "description":"Get Searched Book",
+                    "schema":{
+                        "$ref":"#/definitions/DesiredBooks"
+                    }
+                }], "produces":[
+                    "application/json"
+                ],
+                "responses":{"200": {
                     "description": "OK",
                     "schema": {
-                      "$ref": "#/definitions/Books"
+                      "$ref": "#/definitions/DesiredBooks"
                     }
                   }
+                
+                  
                 }
             }
 
@@ -120,12 +145,12 @@
             }
 
         },
-        "/newestarrival": {
+        "/ebookstore/books/count": {
             "get": {
                 "tags": [
                     "BookData"
                 ],
-                "summary": "Get all Newly arrived Books in system",
+                "summary": "Get Number of Books in System",
                 "responses": {
                   "200": {
                     "description": "OK",
@@ -137,7 +162,7 @@
             }
 
         },
-        "/getimage": {
+        "/ebookstore/image": {
             "get": {
                 "tags": [
                     "BookData"
@@ -155,7 +180,7 @@
             }
 
         },
-        "/userregistration": {
+        "/ebookstore/userdetails": {
             "post": {
                 "tags": [
                     "UserData"
@@ -168,55 +193,45 @@
                     "schema": {
                         "$ref":"#/definitions/Users"                        
                     }
-                }]
-            }
-
-        },
-        "/showuserdetails": {
-            "get": {
-                "tags": [
-                    "UserData"
+                }], "produces":[
+                    "application/json"
                 ],
-                "summary": "Get the user information",
-                "responses": {
-                  "200": {
+                "responses":{"200": {
                     "description": "OK",
                     "schema": {
                       "$ref": "#/definitions/Users"
                     }
                   }
+                
+                  
                 }
             }
 
-        },
-        "/updateuserdata":{
-        "put": {
-            "summary": "Update user with give ID",
-            "tags": [
-              "UserData"
-            ],
-            "parameters": [
-              {
-                "name": "userData",
-                "in": "body",
-                "description": "User with new values of properties",
-                "schema": {
-                  "$ref": "#/definitions/Users"
-                }
-              }
-            ],
-            "responses": {
-              "200": {
-                "description": "User is updated",
-                "schema": {
-                  "$ref": "#/definitions/Users"
-                }
-              }
-            }
-          }
         }
     },
     "definitions":{
+        "DesiredBooks":{
+            "required":[
+                "TITLE"
+            ],
+            "properties":{
+               "TITLE":{
+                "type":"string",
+                "uniqueItems":"true"
+               }
+            }
+        },
+        "AllBooks":{
+            "required":[
+                "page"
+            ],
+            "properties":{
+                "page":{
+                    "type":"number",
+                    "uniqueItems":"true"
+                }
+            }
+        },
         "Books":{
             "required":[
                 "TITLE",
@@ -291,7 +306,7 @@
                     "uniqueItems":"true"
                 },
                 "ADDRESS":{
-                    "type":"number",
+                    "type":"string",
                     "uniqueItems":"true"
                 },
                 "CITY_TOWN":{
@@ -307,4 +322,5 @@
         }
     }
 }
+
 

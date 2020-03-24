@@ -111,29 +111,12 @@
             }
 
         },
-        "/lowtohighrelevance": {
+        "/ebookstore/sort": {
             "get": {
                 "tags": [
                     "BookData"
                 ],
-                "summary": "Get all Lowest to Highest price Books in System",
-                "responses": {
-                  "200": {
-                    "description": "OK",
-                    "schema": {
-                      "$ref": "#/definitions/Books"
-                    }
-                  }
-                }
-            }
-
-        },
-        "/hightolowrelevance": {
-            "get": {
-                "tags": [
-                    "BookData"
-                ],
-                "summary": "Get all Highest to Lowest Price Books in system",
+                "summary": "Get all Books in System according to Relevance Attribute",
                 "responses": {
                   "200": {
                     "description": "OK",

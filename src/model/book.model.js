@@ -99,10 +99,10 @@ exports.sortAllBooksByNewArrival = (data, callback) => {
 };
 
 exports.findone = (data, callback) => {
-  console.log("in findone Function Modukle", data);
-  SCHEMABOOK.findByIdAndUpdate(
-    data,
-    { $inc: { NOOFCOUNT: 1 } },
+  console.log("in findone Function Modukle", data.TITLE);
+  SCHEMABOOK.findOneAndUpdate(
+    data.TITLE,
+    { $inc: { NOOFCOUNT: data.COUNT } },
     (err, data) => {
       if (err) {
         return callback(false);

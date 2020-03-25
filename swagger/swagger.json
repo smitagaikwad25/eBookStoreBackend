@@ -11,10 +11,14 @@
     },
     "host": "localhost:3000",
     "basePath": "/",
-    "tags": [{
-        "name": "Users",
-        "description": "API for users in the system"
-    }],
+    "tags":[{
+        "name":"book-controller",
+        "description":"books controller api"
+    },
+{
+    "name":"customer-details-controller",
+    "description":"customer controller api"
+}],
     "schemes": [
         "http"
     ],
@@ -28,7 +32,7 @@
         "/ebookstore/book": {
             "post": {
                 "tags": [
-                    "BookData"
+                    "book-controller"
                 ],
                 "summary":"Add book to the system",
                 "description": "Create New Book Data in system",
@@ -56,7 +60,7 @@
         "/ebookstore/books": {
             "post": {
                 "tags": [
-                    "BookData"
+                     "book-controller"
                 ],
                 "summary": "Get Books in System",
                 "description":"Get all the books from system",
@@ -85,7 +89,7 @@
         "/ebookstore/search": {
             "post": {
                 "tags": [
-                    "BookData"
+                    "book-controller"
                 ],
                 "summary": "Get Searched Book in System",
                 "description":"Get Searched Book",
@@ -114,7 +118,7 @@
         "/ebookstore/sort": {
             "get": {
                 "tags": [
-                    "BookData"
+                    "book-controller"
                 ],
                 "summary": "Get all Books in System according to Relevance Attribute",
                 "responses": {
@@ -131,7 +135,7 @@
         "/ebookstore/books/count": {
             "get": {
                 "tags": [
-                    "BookData"
+                    "book-controller"
                 ],
                 "summary": "Get Number of Books in System",
                 "responses": {
@@ -148,7 +152,7 @@
         "/ebookstore/image": {
             "get": {
                 "tags": [
-                    "BookData"
+                    "book-controller"
                 ],
                 "description":"Get the image for displaying",
                 "summary": "Get image for the Books",
@@ -166,9 +170,10 @@
         "/ebookstore/userdetails": {
             "post": {
                 "tags": [
-                    "UserData"
+                    "customer-details-controller"
                 ],
                 "description":"get user data",
+                "summary":"Gets customer details",
                 "parameters":[{
                     "name": "userData",
                     "in": "body",
